@@ -5,9 +5,9 @@ import java.io.IOException;
 /**
  * Esta clase inicia el servidor creando hilos para cada conexion.
  */
-public class Servidor extends Conexion { 
+public class ServidorLinda extends Conexion { 
 	
-    public Servidor() throws IOException {
+    public ServidorLinda() throws IOException {
     	super("servidor");
     }
     /**
@@ -17,12 +17,10 @@ public class Servidor extends Conexion {
 	 */
     public void startServer() {
         try {
-        	Avion avion1 = new Avion();
-        	avion1.mostrarPlazas();
         	while(true) {
         		System.out.println("Esperando...");
-                cs = ss.accept(); 
-                ThreadFuncion hilo = new ThreadFuncion(cs,avion1);
+                csl = ss.accept(); 
+                ThreadLinda hilo = new ThreadLinda(csl);
                 hilo.start();
         	}
         }
