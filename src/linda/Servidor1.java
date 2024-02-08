@@ -2,15 +2,11 @@ package linda;
 
 import java.io.IOException;
 
-/**
- * Esta clase inicia el servidor creando hilos para cada conexion.
- */
-public class ServidorLinda extends Conexion { 
-	
-    public ServidorLinda() throws IOException {
-    	super("servidorLinda");
+public class Servidor1 extends Conexion{
+	public Servidor1() throws IOException {
+    	super("servidor");
     }
-    /**
+	/**
 	 * Pre: --- 
 	 * Post: Este metodo entra en bucle infinito de escucha de clientes, 
 	 * crea un hilo y aloja al cliente en ese hilo.
@@ -19,8 +15,8 @@ public class ServidorLinda extends Conexion {
         try {
         	while(true) {
         		System.out.println("Esperando...");
-                csl = ss.accept(); 
-                ThreadLinda hilo = new ThreadLinda(csl);
+                cs1 = ss.accept(); 
+                ThreadS hilo = new ThreadS(cs1);
                 hilo.start();
         	}
         }

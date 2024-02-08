@@ -27,16 +27,16 @@ public class MainServidor {
 	      System.out.println("Iniciando servidor\n");
 	      serv.startServer();
 	  }else if(decision.equals("tuplas1")) {
-		  ServidorLinda serv = new ServidorLinda();
-	      System.out.println("Iniciando servidor\n");
-	      //serv.startServer();
+		  Servidor1 serv = new Servidor1();
+	      System.out.println("Iniciando servidor1\n");
+	      serv.startServer();
 	  }else if(decision.equals("tuplas2")) {
-		  ServidorLinda serv = new ServidorLinda();
-	      System.out.println("Iniciando servidor\n");
+		  //ServidorLinda serv = new ServidorLinda();
+	      //System.out.println("Iniciando servidor\n");
 	      //serv.startServer();
 	  }else {
-		  ServidorLinda serv = new ServidorLinda();
-	      System.out.println("Iniciando servidor\n");
+		  //ServidorLinda serv = new ServidorLinda();
+	      //System.out.println("Iniciando servidor\n");
 	      //serv.startServer();
 	  }
   }

@@ -8,6 +8,7 @@ import java.net.Socket;
  */
 public class Conexion {
     private final int PUERTO = 1234;
+    private final int PUERTOL = 4321;
     private final String HOSTLinda = "localhost";
     private final String HOST1 = "localhost";
     private final String HOST2 = "localhost";
@@ -25,12 +26,15 @@ public class Conexion {
     public Conexion(String tipo) throws IOException {
         if(tipo.equalsIgnoreCase("servidor")) {
             ss = new ServerSocket(PUERTO);
-        } else {
-            csl = new Socket(HOSTLinda, PUERTO);
-            cs1 = new Socket(HOST1, PUERTO);
+        }else if(tipo.equalsIgnoreCase("servidorLinda")) {
+        	ss = new ServerSocket(PUERTOL);
+        }
+        else if(tipo.equalsIgnoreCase("cliente")){
+            csl = new Socket(HOSTLinda, PUERTOL);
+        }else if(tipo.equalsIgnoreCase("clienteLinda")) {
+        	cs1 = new Socket(HOST1, PUERTO);
             cs2 = new Socket(HOST2, PUERTO);
             cs3 = new Socket(HOST3, PUERTO);
-            
         }
     }
 }
