@@ -14,7 +14,7 @@ public class MainServidor {
 	 */
   public static void main(String[] args) throws IOException {
 	  Scanner input = new Scanner(System.in);
-	  System.out.println("Elige que tipo de servidor quieres levantar: Linda, tuplas1, tuplas2, tuplas3");
+	  System.out.println("Elige que tipo de servidor quieres levantar: Linda, tuplas1, tuplas2, tuplas3 \n ==>>");
 	  String decision = "";
 	  while(true) {
 		  decision = input.nextLine();
@@ -29,15 +29,15 @@ public class MainServidor {
 	  }else if(decision.equals("tuplas1")) {
 		  ServidorLinda serv = new ServidorLinda();
 	      System.out.println("Iniciando servidor\n");
-	      serv.startServer();
+	      //serv.startServer();
 	  }else if(decision.equals("tuplas2")) {
 		  ServidorLinda serv = new ServidorLinda();
 	      System.out.println("Iniciando servidor\n");
-	      serv.startServer();
+	      //serv.startServer();
 	  }else {
 		  ServidorLinda serv = new ServidorLinda();
 	      System.out.println("Iniciando servidor\n");
-	      serv.startServer();
+	      //serv.startServer();
 	  }
   }
 }

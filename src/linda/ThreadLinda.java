@@ -16,6 +16,8 @@ public class ThreadLinda extends Thread{
 	        DataInputStream in = new DataInputStream(csl.getInputStream());
 	        DataOutputStream out = new DataOutputStream(csl.getOutputStream());
 	        out.writeUTF("Petición recibida y aceptada.");
+	        System.out.println(in.readUTF());
+	        out.writeUTF("Que tal todo");
 	        csl.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
