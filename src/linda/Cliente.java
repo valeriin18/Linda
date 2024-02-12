@@ -2,7 +2,9 @@ package linda;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 /**
  * Esta clase contendra el codigo de uso de los clientes.
@@ -11,46 +13,20 @@ public class Cliente extends Conexion {
     public Cliente() throws IOException {
     	super("cliente");
     } 
-    /**
-	 * Pre: --- 
-	 * Post: En este metodo se solicitara al cliente su nombre de usuario 
-	 * y luego entrara en bucle de compra de billetes hasta que el avion 
-	 * este vacio. 
-	 */
-    private void postNote(DataInputStream in, DataOutputStream out) {
-    	try {
-    		out.writeUTF("Holaa linda");
-    		System.out.println(in.readUTF());
-    	}catch(Exception e) {
-    		
+    
+    public ArrayList<String> creacionTupla(Scanner entrada){
+    	ArrayList<String> tupla = new ArrayList<>();
+    	while(true) {
+    		System.out.println("Introduce los strings que constituyen la tupla, \n"
+    						 + "si se introduce \"EXIT\" se terminara la introduccion.");
+    		String eleccion = entrada.nextLine();
+    		if(eleccion.equals("EXIT")) break;
+    		else if(eleccion.equals("")) System.out.println("Error debe introducir algun caracter.");
+    		else tupla.add(eleccion);
     	}
+    	return tupla;
     }
-    /**
-	 * Pre: --- 
-	 * Post: En este metodo se solicitara al cliente su nombre de usuario 
-	 * y luego entrara en bucle de compra de billetes hasta que el avion 
-	 * este vacio.
-	 */
-    private void removeNote() {
-    	try {
-    		
-    	}catch(Exception e) {
-    		
-    	}
-    }
-    /**
-	 * Pre: --- 
-	 * Post: En este metodo se solicitara al cliente su nombre de usuario 
-	 * y luego entrara en bucle de compra de billetes hasta que el avion 
-	 * este vacio.
-	 */
-    private void readNote() {
-    	try {
-    		
-    	}catch(Exception e) {
-    		
-    	}
-    }
+    
 	/**
 	 * Pre: --- 
 	 * Post: En este metodo se solicitara al cliente su nombre de usuario 
@@ -61,27 +37,35 @@ public class Cliente extends Conexion {
     	try {
 			DataInputStream in = new DataInputStream(csl.getInputStream());
             DataOutputStream out = new DataOutputStream(csl.getOutputStream());
+            ObjectOutputStream outObject = new ObjectOutputStream(csl.getOutputStream());
             String mensaje = in.readUTF();
             System.out.println(mensaje);
-            System.out.println("BIENVENIDO AL SISTEMA LINDA");
             Scanner entrada = new Scanner(System.in);
             while(true) {
             	System.out.print("Elija una de las siguientes opciones: \n"
             			+ " 1.PostNote. \n 2.RemoveNote. \n 3.ReadNote. \n"
             			+ " 4.Salir. \n==>>");
-            	int eleccion = entrada.nextInt();
-            	if (eleccion == 1) {
-            		postNote(in,out);
-            	}else if (eleccion == 2) {
-            		removeNote();
-            	}else if (eleccion == 3) {
-            		readNote();
-            	}else if(eleccion == 4){
-            		System.out.println("Saliendo del sistema...");
+            	String eleccion = entrada.nextLine();
+            	if (eleccion.equals("1")) {
+            		out.writeUTF("PostNote");
+            		System.out.println(in.readUTF());
+            		System.out.println(in.readUTF());
+            		ArrayList<String> tupla = creacionTupla(entrada);
+            		outObject.writeObject(tupla);
+            		System.out.println(in.readUTF());
+            	}else if(eleccion.equals("2")){
+            		out.writeUTF("RemoveNote");
+            		System.out.println(in.readUTF());
+            	}else if(eleccion.equals("3")) {
+            		out.writeUTF("ReadNote");
+            		System.out.println(in.readUTF());
+            	}else if(eleccion.equals("4")) {
+            		out.writeUTF("terminar");
+            		System.out.println(in.readUTF());
+            		System.out.println("Saliendo del Sistema... Hasta Pronto!");
             		break;
-            	}else {
-            		System.out.println("Error elija una opcion correcta...");
             	}
+            	else System.out.println("Error elija una opcion correcta...");
             }
             csl.close();
 		}catch(Exception e) {
