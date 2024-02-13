@@ -10,10 +10,6 @@ public class Servidores extends Conexion{
 	public Servidores(String tipo) throws IOException {
 		super("servidor");
 		this.tipo = tipo;
-		this.tuplas1 = new BaseDeDatos();
-		this.tuplas2 = new BaseDeDatos();
-		this.tuplas3 = new BaseDeDatos();
-    	
     }
 	/**
 	 * Pre: --- 
@@ -23,8 +19,9 @@ public class Servidores extends Conexion{
 	private void startServ1() {
 		try {
         	while(true) {
+        		this.tuplas1 = new BaseDeDatos();
         		System.out.println("Esperando...");
-        		cs = ss.accept(); 
+        		cs = ss1.accept(); 
                 ThreadServidores hilo = new ThreadServidores(cs,tuplas1);
                 hilo.start();
         	}
@@ -37,8 +34,9 @@ public class Servidores extends Conexion{
 	private void startServ2() {
 		try {
         	while(true) {
+        		this.tuplas2 = new BaseDeDatos();
         		System.out.println("Esperando...");
-        		cs = ss.accept(); 
+        		cs = ss2.accept(); 
                 ThreadServidores hilo = new ThreadServidores(cs,tuplas2);
                 hilo.start();
         	}
@@ -51,8 +49,9 @@ public class Servidores extends Conexion{
 	private void startServ3() {
 		try {
         	while(true) {
+        		this.tuplas3 = new BaseDeDatos();
         		System.out.println("Esperando...");
-        		cs = ss.accept(); 
+        		cs = ss3.accept(); 
                 ThreadServidores hilo = new ThreadServidores(cs,tuplas3);
                 hilo.start();
         	}

@@ -12,30 +12,34 @@ import java.util.ArrayList;
 
 public class ThreadLinda extends Thread{
 	private Socket cs;
+	private final int PUERTO1 = 4321;
+	private final int PUERTO2 = 5678;
+	private final int PUERTO3 = 9101;
+	private final String HOST1 = "localhost";
+	private final String HOST2 = "localhost";
+	private final String HOST3 = "localhost";
 	public ThreadLinda(Socket cs) {
 		this.cs = cs;
 	}
 	
-	private String clienteRun(OutputStream outLin, InputStream inLin, String tipo, ArrayList<String> tupla) {
+	private String clienteRun(Socket cs, String tipo, ArrayList<String> tupla) {
 		String devolucion = "";
 		try {
-			DataInputStream in = new DataInputStream(inLin);
-			DataOutputStream out = new DataOutputStream(outLin);
-			ObjectOutputStream outObj = new ObjectOutputStream(outLin);
+			DataInputStream in = new DataInputStream(cs.getInputStream());
+			DataOutputStream out = new DataOutputStream(cs.getOutputStream());
+			ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
 			out.writeUTF(tipo);
 			System.out.println(in.readUTF());
 			outObj.writeObject(tupla);
 			devolucion = in.readUTF();
 			System.out.println(devolucion);
-			///////////////////////////////////////////////////pasamos al serv tipo y tupla y ya valdria esto.
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return devolucion;
 	}
 	
-	private void postNote(String accion, DataInputStream in, DataOutputStream out, ObjectInputStream inObject) {
+	private void gestionConexion(String accion, DataInputStream in, DataOutputStream out, ObjectInputStream inObject) {
 		try {
 			if(accion.equals("PostNote")) {
 				out.writeUTF("Accion recibida, has elegido PostNote.");
@@ -48,13 +52,20 @@ public class ThreadLinda extends Thread{
 				out.writeUTF("Devuelve que tupla deseas borrar.");
 			}
 			ArrayList<String> tupla = (ArrayList<String>) inObject.readObject();
-			Conexion conexionLinda = new Conexion("clienteLinda");
 			System.out.println(tupla);
 			if(tupla.size() <= 3) {
-				out.writeUTF(clienteRun(conexionLinda.cs.getOutputStream(), conexionLinda.cs.getInputStream(),accion,tupla));
+				Socket cs = new Socket(HOST1,PUERTO1);
+				out.writeUTF(clienteRun(cs,accion,tupla));
+				cs.close();
 			}else if(tupla.size() > 3 && tupla.size() <= 5) {
-				out.writeUTF(clienteRun(conexionLinda.cs.getOutputStream(), conexionLinda.cs.getInputStream(),accion,tupla));
-			}else out.writeUTF(clienteRun(conexionLinda.cs.getOutputStream(), conexionLinda.cs.getInputStream(),accion,tupla));
+				Socket cs = new Socket(HOST2,PUERTO2);
+				out.writeUTF(clienteRun(cs,accion,tupla));
+				cs.close();
+			}else {
+				Socket cs = new Socket(HOST3,PUERTO3);
+				out.writeUTF(clienteRun(cs,accion,tupla));
+				cs.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -72,7 +83,7 @@ public class ThreadLinda extends Thread{
 				String accion = in.readUTF();
 	            System.out.println(accion);
 	            if(accion.equals("terminar")) break;
-	            else postNote(accion,in,out,inObject);
+	            else gestionConexion(accion,in,out,inObject);
 			}
 	        cs.close();
 		} catch (Exception e) {

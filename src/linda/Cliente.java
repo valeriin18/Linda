@@ -14,13 +14,14 @@ public class Cliente extends Conexion {
     	super("cliente");
     } 
     
-    public ArrayList<String> creacionTupla(Scanner entrada){
+    public ArrayList<String> creacionTupla(Scanner entrada, String eleccionP){
     	ArrayList<String> tupla = new ArrayList<>();
     	while(true) {
     		System.out.println("Introduce los strings que constituyen la tupla, \n"
     						 + "si se introduce \"EXIT\" se terminara la introduccion.");
     		String eleccion = entrada.nextLine();
-    		if(eleccion.equals("EXIT")) break;
+    		if(eleccion.contains("?") && eleccionP.equals("1"))System.out.println("Error al añadir no puedes ingresar ?");
+    		else if(eleccion.equals("EXIT")) break;
     		else if(eleccion.equals("")) System.out.println("Error debe introducir algun caracter.");
     		else tupla.add(eleccion);
     	}
@@ -50,15 +51,27 @@ public class Cliente extends Conexion {
             		out.writeUTF("PostNote");
             		System.out.println(in.readUTF());
             		System.out.println(in.readUTF());
-            		ArrayList<String> tupla = creacionTupla(entrada);
+            		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
             		outObject.writeObject(tupla);
             		System.out.println(in.readUTF());
+            		
+            		
             	}else if(eleccion.equals("2")){
             		out.writeUTF("RemoveNote");
             		System.out.println(in.readUTF());
+            		System.out.println(in.readUTF());
+            		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
+            		outObject.writeObject(tupla);
+            		System.out.println(in.readUTF());
+            		
             	}else if(eleccion.equals("3")) {
             		out.writeUTF("ReadNote");
             		System.out.println(in.readUTF());
+            		System.out.println(in.readUTF());
+            		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
+            		outObject.writeObject(tupla);
+            		System.out.println(in.readUTF());
+
             	}else if(eleccion.equals("4")) {
             		out.writeUTF("terminar");
             		System.out.println(in.readUTF());

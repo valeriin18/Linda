@@ -26,12 +26,38 @@ public class ThreadServidores extends Thread {
 		}
 	}
 	
-	public void removeNote() {
-		
+	public void removeNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
+		try {
+			out.writeUTF("Accion recibida todo correcto, Linda");
+			ArrayList<String> tupla = (ArrayList<String>) inObj.readObject(); 
+			ArrayList<String>tuplaAborrar = tuplas.search(tupla);
+			if( tuplaAborrar == null) {
+				out.writeUTF("Error la tupla no se encuentra en la base de datos");
+			}else {
+				out.writeUTF(tuplas.remove(tuplaAborrar));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void readNote() {
-		
+	public void readNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
+		try {
+			out.writeUTF("Accion recibida todo correcto, Linda");
+			ArrayList<String> tupla = (ArrayList<String>) inObj.readObject(); 
+			ArrayList<String>tuplaEncontrada = tuplas.search(tupla);
+			if( tuplaEncontrada == null) {
+				out.writeUTF("Error la tupla no se encuentra en la base de datos");
+			}else {
+				String tuplaAbierta = "";
+				for(String valor : tuplaEncontrada) {
+					tuplaAbierta += valor + " ";
+				}
+				out.writeUTF(tuplaAbierta);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void run() {
@@ -42,8 +68,8 @@ public class ThreadServidores extends Thread {
 	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
 	        String mensaje = in.readUTF();
 	        if(mensaje.equals("PostNote")) postNote(in,out,inObj);
-	        else if(mensaje.equals("RemoveNote")) removeNote();
-	        else readNote();
+	        else if(mensaje.equals("RemoveNote")) removeNote(in,out,inObj);
+	        else readNote(in,out,inObj);
 	        cs.close();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
