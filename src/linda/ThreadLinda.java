@@ -11,74 +11,70 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ThreadLinda extends Thread{
-	private Socket csl;
-	public ThreadLinda(Socket csl) {
-		this.csl = csl;
+	private Socket cs;
+	public ThreadLinda(Socket cs) {
+		this.cs = cs;
 	}
 	
-	private void clienteRun(OutputStream outLin, InputStream inLin, String tipo, ArrayList<String> tupla) {
+	private String clienteRun(OutputStream outLin, InputStream inLin, String tipo, ArrayList<String> tupla) {
+		String devolucion = "";
 		try {
 			DataInputStream in = new DataInputStream(inLin);
 			DataOutputStream out = new DataOutputStream(outLin);
-			
+			ObjectOutputStream outObj = new ObjectOutputStream(outLin);
+			out.writeUTF(tipo);
+			System.out.println(in.readUTF());
+			outObj.writeObject(tupla);
+			devolucion = in.readUTF();
+			System.out.println(devolucion);
 			///////////////////////////////////////////////////pasamos al serv tipo y tupla y ya valdria esto.
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        
+		return devolucion;
 	}
 	
-	private void postNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObject) {
+	private void postNote(String accion, DataInputStream in, DataOutputStream out, ObjectInputStream inObject) {
 		try {
-			String tipo = "pn";
-			out.writeUTF("Accion recibida, has elegido PostNote.");
-			out.writeUTF("Devuelve que tupla deseas añadir.");
+			if(accion.equals("PostNote")) {
+				out.writeUTF("Accion recibida, has elegido PostNote.");
+				out.writeUTF("Devuelve que tupla deseas añadir.");
+			}else if(accion.equals("ReadNote")) {
+				out.writeUTF("Accion recibida, has elegido ReadNote.");
+				out.writeUTF("Devuelve que tupla deseas buscar.");
+			}else {
+				out.writeUTF("Accion recibida, has elegido RemoveNote.");
+				out.writeUTF("Devuelve que tupla deseas borrar.");
+			}
 			ArrayList<String> tupla = (ArrayList<String>) inObject.readObject();
 			Conexion conexionLinda = new Conexion("clienteLinda");
 			System.out.println(tupla);
 			if(tupla.size() <= 3) {
-				clienteRun(conexionLinda.cs1.getOutputStream(), conexionLinda.cs1.getInputStream(),tipo,tupla);
+				out.writeUTF(clienteRun(conexionLinda.cs.getOutputStream(), conexionLinda.cs.getInputStream(),accion,tupla));
 			}else if(tupla.size() > 3 && tupla.size() <= 5) {
-				clienteRun(conexionLinda.cs2.getOutputStream(), conexionLinda.cs2.getInputStream(),tipo,tupla);
-			}else clienteRun(conexionLinda.cs3.getOutputStream(), conexionLinda.cs3.getInputStream(),tipo,tupla);
+				out.writeUTF(clienteRun(conexionLinda.cs.getOutputStream(), conexionLinda.cs.getInputStream(),accion,tupla));
+			}else out.writeUTF(clienteRun(conexionLinda.cs.getOutputStream(), conexionLinda.cs.getInputStream(),accion,tupla));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void removeNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObject) {
-		try {
-			out.writeUTF("Accion recibida, has elegido RemoveNote.");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void readNote(DataInputStream in, DataOutputStream out) {
-		try {
-			out.writeUTF("Accion recibida, has elegido ReadNote.");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public void run() {
 		try {
 			System.out.println("Cliente en línea");
-	        DataInputStream in = new DataInputStream(csl.getInputStream());
-	        DataOutputStream out = new DataOutputStream(csl.getOutputStream());
-	        ObjectInputStream inObject = new ObjectInputStream(csl.getInputStream());
+	        DataInputStream in = new DataInputStream(cs.getInputStream());
+	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
+	        ObjectInputStream inObject = new ObjectInputStream(cs.getInputStream());
 	        out.writeUTF("BIENVENIDO AL SISTEMA LINDA");
 	        while(true) {
 				String accion = in.readUTF();
 	            System.out.println(accion);
-	            if(accion.equals("PostNote")) postNote(in,out,inObject);
-	            else if(accion.equals("RemoveNote")) removeNote(in,out,inObject);
-	            else if(accion.equals("terminar")) break;
-	            else readNote(in, out);
+	            if(accion.equals("terminar")) break;
+	            else postNote(accion,in,out,inObject);
 			}
-	        csl.close();
+	        cs.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 	    }

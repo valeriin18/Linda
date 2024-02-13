@@ -6,36 +6,31 @@ import java.net.Socket;
 /**
  * Esta clase contendra todos los datos de conexion entre el cliente y servidor.
  */
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class Conexion {
-    private final int PUERTO = 1234;
-    private final int PUERTOL = 4321;
-    private final int PUERTOLa = 4354;
-    private final String HOSTLinda = "localhost";
-    private final String HOST1 = "localhost";
-    private final String HOST2 = "localhost";
-    private final String HOST3 = "localhost";
-    protected ServerSocket ss;
-    protected Socket csl;
-    protected Socket cs1; 
-    protected Socket cs2; 
-    protected Socket cs3; 
-    /**
-     * Pre: --- 
-     * Post: Esta clase comprobara si el que hace la peticion es servidor o cliente 
-     * y se ejecutara la conexion.
-     */
-    public Conexion(String tipo) throws IOException {
-        if(tipo.equalsIgnoreCase("servidor")) {
-            ss = new ServerSocket(PUERTO);
-        }else if(tipo.equalsIgnoreCase("servidorLinda")) {
-        	ss = new ServerSocket(PUERTOL);
-        }
-        else if(tipo.equalsIgnoreCase("cliente")){
-            csl = new Socket(HOSTLinda, PUERTOL);
-        }else if(tipo.equalsIgnoreCase("clienteLinda")) {
-        	cs1 = new Socket(HOST1, PUERTOL);
-            //cs2 = new Socket(HOST2, PUERTO);
-            //cs3 = new Socket(HOST3, PUERTO);
+    // Puertos para la conexión. Deben ser diferentes para evitar conflictos.
+    private final int PUERTO_CLIENTE_LINDA = 1234; // Puerto para que los clientes se conecten a Linda
+    public static int PUERTO_LINDA_SERVIDOR = 5678; // Puerto para que Linda se conecte al servidor
+    private final String HOST = "localhost"; // Host para la conexión
+    protected ServerSocket ss; // Socket del servidor
+    protected Socket cs; // Socket del cliente
+
+    public Conexion(String tipo) throws IOException { // Constructor
+        if (tipo.equalsIgnoreCase("servidorLinda")) {
+            // LindaServidor escucha en este puerto para aceptar clientes.
+            ss = new ServerSocket(PUERTO_CLIENTE_LINDA);
+        } else if (tipo.equalsIgnoreCase("servidor")) {
+            // Servidor escucha en este puerto para aceptar conexiones de Linda.
+            ss = new ServerSocket(PUERTO_LINDA_SERVIDOR);
+        } else if (tipo.equalsIgnoreCase("cliente")) {
+            // Cliente se conecta a LindaServidor.
+            cs = new Socket(HOST, PUERTO_CLIENTE_LINDA);
+        } else if (tipo.equalsIgnoreCase("clienteLinda")) {
+            // LindaCliente se conecta al Servidor.
+            cs = new Socket(HOST, PUERTO_LINDA_SERVIDOR);
         }
     }
 }

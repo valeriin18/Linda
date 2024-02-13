@@ -24,8 +24,8 @@ public class Servidores extends Conexion{
 		try {
         	while(true) {
         		System.out.println("Esperando...");
-        		cs1 = ss.accept(); 
-                ThreadS hilo = new ThreadS(cs1,tuplas1);
+        		cs = ss.accept(); 
+                ThreadServidores hilo = new ThreadServidores(cs,tuplas1);
                 hilo.start();
         	}
         }
@@ -38,8 +38,8 @@ public class Servidores extends Conexion{
 		try {
         	while(true) {
         		System.out.println("Esperando...");
-        		cs2 = ss.accept(); 
-                ThreadS hilo = new ThreadS(cs2,tuplas2);
+        		cs = ss.accept(); 
+                ThreadServidores hilo = new ThreadServidores(cs,tuplas2);
                 hilo.start();
         	}
         }
@@ -52,8 +52,8 @@ public class Servidores extends Conexion{
 		try {
         	while(true) {
         		System.out.println("Esperando...");
-        		cs3 = ss.accept(); 
-                ThreadS hilo = new ThreadS(cs3,tuplas3);
+        		cs = ss.accept(); 
+                ThreadServidores hilo = new ThreadServidores(cs,tuplas3);
                 hilo.start();
         	}
         }

@@ -35,9 +35,9 @@ public class Cliente extends Conexion {
 	 */
     public void startClient() {
     	try {
-			DataInputStream in = new DataInputStream(csl.getInputStream());
-            DataOutputStream out = new DataOutputStream(csl.getOutputStream());
-            ObjectOutputStream outObject = new ObjectOutputStream(csl.getOutputStream());
+			DataInputStream in = new DataInputStream(cs.getInputStream());
+            DataOutputStream out = new DataOutputStream(cs.getOutputStream());
+            ObjectOutputStream outObject = new ObjectOutputStream(cs.getOutputStream());
             String mensaje = in.readUTF();
             System.out.println(mensaje);
             Scanner entrada = new Scanner(System.in);
@@ -67,7 +67,7 @@ public class Cliente extends Conexion {
             	}
             	else System.out.println("Error elija una opcion correcta...");
             }
-            csl.close();
+            cs.close();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

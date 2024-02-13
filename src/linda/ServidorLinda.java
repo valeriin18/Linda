@@ -19,8 +19,8 @@ public class ServidorLinda extends Conexion {
         try {
         	while(true) {
         		System.out.println("Esperando...");
-                csl = ss.accept(); 
-                ThreadLinda hilo = new ThreadLinda(csl);
+                cs = ss.accept(); 
+                ThreadLinda hilo = new ThreadLinda(cs);
                 hilo.start();
         	}
         }
