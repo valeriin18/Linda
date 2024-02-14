@@ -8,7 +8,7 @@ import java.io.IOException;
 public class ServidorLinda extends Conexion { 
 	
     public ServidorLinda() throws IOException {
-    	super("servidorLinda");
+    	super("servidorLinda",0);
     }
     /**
 	 * Pre: --- 

@@ -1,24 +1,33 @@
 package linda;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 public class BaseDeDatos {
 	ArrayList<ArrayList<String>> content;
+	private Semaphore s1;
 
 	public BaseDeDatos() {
 		this.content = new ArrayList<>();
-	}
-
-	public boolean isEmpty() {
-		if(content.size() == 0) {
-			return true;
-		}
-		return false;
-	}
-	public ArrayList<ArrayList<String>> getContent() {
-		return content;
+		this.s1 = new Semaphore(2);
 	}
 	
+	public String read(ArrayList<String> tupla) {
+		try {
+			s1.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}finally {
+			s1.release(1);
+		}
+		ArrayList<String> tuplaEncontrada = new ArrayList<>();
+		tuplaEncontrada = search(tupla);
+		if( tuplaEncontrada == null) {
+			return("Error la tupla no se encuentra en la base de datos");
+		}else {
+			return(tuplaEncontrada.toString());
+		}
+	}
 	public ArrayList<String> search(ArrayList<String> tupla){
 		boolean seEncuentra = false;
 		ArrayList<String> tuplaABorrar = new ArrayList<>();
@@ -44,8 +53,15 @@ public class BaseDeDatos {
 		}
 	}
 	
-	public String remove(ArrayList<String> tupla) {
-		if(!(isEmpty())) {
+	public synchronized String remove(ArrayList<String> tupla) {
+		try {
+			s1.acquire(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}finally {
+			s1.release(2);
+		}
+		if(!(content.isEmpty())) {
 			int indice = 0;
 			for(int i = 0; i < content.size(); i++) {
 				if(tupla == content.get(i)) {
@@ -53,11 +69,18 @@ public class BaseDeDatos {
 					break;
 				}
 			}
+			content.remove(indice);
 			return("Tupla borrada correctamente!");
 		}else return("No es posible borrar el dato puesto que la base de datos esta vacia.");
 	}
 	
-	public void add(ArrayList<String> tupla) {
-		content.add(tupla);
+	public synchronized void add(ArrayList<String> tupla) {
+		try {
+			s1.acquire(1);
+			content.add(tupla);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		s1.release(1);
 	}
 }

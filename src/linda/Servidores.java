@@ -3,13 +3,14 @@ package linda;
 import java.io.IOException;
 
 public class Servidores extends Conexion{
-	String tipo;
+	int numero;
 	BaseDeDatos tuplas1;
 	BaseDeDatos tuplas2;
 	BaseDeDatos tuplas3;
-	public Servidores(String tipo) throws IOException {
-		super("servidor");
-		this.tipo = tipo;
+	public Servidores(int numero) throws IOException {
+		super("servidor",numero);
+		this.numero = numero;
+		
     }
 	/**
 	 * Pre: --- 
@@ -18,8 +19,8 @@ public class Servidores extends Conexion{
 	 */
 	private void startServ1() {
 		try {
+			this.tuplas1 = new BaseDeDatos();
         	while(true) {
-        		this.tuplas1 = new BaseDeDatos();
         		System.out.println("Esperando...");
         		cs = ss1.accept(); 
                 ThreadServidores hilo = new ThreadServidores(cs,tuplas1);
@@ -33,8 +34,8 @@ public class Servidores extends Conexion{
 	
 	private void startServ2() {
 		try {
+			this.tuplas2 = new BaseDeDatos();
         	while(true) {
-        		this.tuplas2 = new BaseDeDatos();
         		System.out.println("Esperando...");
         		cs = ss2.accept(); 
                 ThreadServidores hilo = new ThreadServidores(cs,tuplas2);
@@ -48,8 +49,8 @@ public class Servidores extends Conexion{
 	
 	private void startServ3() {
 		try {
+			this.tuplas3 = new BaseDeDatos();
         	while(true) {
-        		this.tuplas3 = new BaseDeDatos();
         		System.out.println("Esperando...");
         		cs = ss3.accept(); 
                 ThreadServidores hilo = new ThreadServidores(cs,tuplas3);
@@ -61,8 +62,8 @@ public class Servidores extends Conexion{
         }
 	}
     public void startServer() {
-        if(tipo.equals("serv1")) startServ1();
-        else if(tipo.equals("serv2")) startServ2();
+        if(numero == 1) startServ1();
+        else if(numero == 2) startServ2();
         else startServ3();
     }
 }

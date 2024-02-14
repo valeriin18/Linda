@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 public class Cliente extends Conexion {
     public Cliente() throws IOException {
-    	super("cliente");
+    	super("cliente",0);
     } 
     
     public ArrayList<String> creacionTupla(Scanner entrada, String eleccionP){

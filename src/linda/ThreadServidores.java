@@ -45,16 +45,8 @@ public class ThreadServidores extends Thread {
 		try {
 			out.writeUTF("Accion recibida todo correcto, Linda");
 			ArrayList<String> tupla = (ArrayList<String>) inObj.readObject(); 
-			ArrayList<String>tuplaEncontrada = tuplas.search(tupla);
-			if( tuplaEncontrada == null) {
-				out.writeUTF("Error la tupla no se encuentra en la base de datos");
-			}else {
-				String tuplaAbierta = "";
-				for(String valor : tuplaEncontrada) {
-					tuplaAbierta += valor + " ";
-				}
-				out.writeUTF(tuplaAbierta);
-			}
+			String StringtuplaEncontrada = tuplas.read(tupla);
+			out.writeUTF(StringtuplaEncontrada);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
