@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -14,7 +15,22 @@ public class ThreadServidores extends Thread {
 		this.cs = cs;
 		this.tuplas = tuplas;
 	}
+	public void subida(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
+		try {
+			BaseDeDatos tupla = (BaseDeDatos) inObj.readObject();
+			tuplas = tupla;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
 	
+	public void descarga(DataInputStream in, DataOutputStream out, ObjectOutputStream outObj) {
+		try {
+			outObj.writeObject(tuplas);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void postNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
 		try {
 			out.writeUTF("Accion recibida todo correcto, Linda");
@@ -58,9 +74,12 @@ public class ThreadServidores extends Thread {
 	        DataInputStream in = new DataInputStream(cs.getInputStream());
 	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
 	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
+	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
 	        String mensaje = in.readUTF();
 	        if(mensaje.equals("PostNote")) postNote(in,out,inObj);
 	        else if(mensaje.equals("RemoveNote")) removeNote(in,out,inObj);
+	        else if(mensaje.equals("subida")) subida(in,out,inObj);
+	        else if(mensaje.equals("descarga")) descarga(in,out,outObj);
 	        else readNote(in,out,inObj);
 	        cs.close();
 		}catch(Exception e) {

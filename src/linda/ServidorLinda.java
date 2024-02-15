@@ -18,6 +18,8 @@ public class ServidorLinda extends Conexion {
     public void startServer() {
         try {
         	while(true) {
+        		ThreadCopiaServers copia = new ThreadCopiaServers(); 
+				copia.start();
         		System.out.println("Esperando...");
                 cs = ss.accept(); 
                 ThreadLinda hilo = new ThreadLinda(cs);

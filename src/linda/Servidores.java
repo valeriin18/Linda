@@ -38,7 +38,7 @@ public class Servidores extends Conexion{
 			this.tuplas1Replica = new BaseDeDatos();
         	while(true) {
         		System.out.println("Esperando...");
-        		cs = ss1.accept(); 
+        		cs = ssReplica.accept(); 
                 ThreadServidores hilo = new ThreadServidores(cs,tuplas1Replica);
                 hilo.start();
         	}

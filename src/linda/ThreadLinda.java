@@ -7,11 +7,12 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.ObjectInputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class ThreadLinda extends Thread{
-	private Socket cs;
+	private Socket csGen;
 	private final int PUERTO1 = 4321;
 	private final int PUERTO2 = 5678;
 	private final int PUERTO3 = 9101;
@@ -20,10 +21,18 @@ public class ThreadLinda extends Thread{
 	private final String HOST2 = "172.30.100.145";
 	private final String HOST3 = "172.30.100.145";
 	private final String HOSTReplica = "172.30.100.145";
-	public ThreadLinda(Socket cs) {
-		this.cs = cs;
+	public ThreadLinda(Socket csGen) {
+		this.csGen = csGen;
 	}
-	
+	private void copiaDatos(Socket cs, Socket csReplica, String tipo) {
+		try {
+			
+			
+		}catch(Exception e) {
+			
+		}
+		
+	}
 	private String clienteRun(Socket cs, String tipo, ArrayList<String> tupla) {
 		String devolucion = "";
 		try {
@@ -60,22 +69,28 @@ public class ThreadLinda extends Thread{
 				Socket csReplica = null;
 				Boolean activo = true;
 				try {
-					cs = new Socket(HOST1,PUERTO1);
+					System.out.println(activo);
+					cs = new Socket();
+					cs.connect(new InetSocketAddress(HOST1,PUERTO1), 500);
 					out.writeUTF(clienteRun(cs,accion,tupla));
-				}catch(IOException e) {
+					cs.close();
+				}catch(Exception e) {
 					activo = false;
+					System.out.println(activo);
 				}try {
-					csReplica = new Socket(HOSTReplica,PUERTOReplica);
+					csReplica = new Socket();
+					csReplica.connect(new InetSocketAddress(HOSTReplica,PUERTOReplica), 500);
 					if(activo == false) {
 						out.writeUTF(clienteRun(csReplica,accion,tupla));
+						csReplica.close();
 					}else {
 						clienteRun(csReplica,accion,tupla);
+						csReplica.close();
 					}
 				}catch(IOException e) {
 					e.printStackTrace();
 				}
-				cs.close();
-				csReplica.close();
+				
 			}else if(tupla.size() > 3 && tupla.size() <= 5) {
 				Socket cs = new Socket(HOST2,PUERTO2);
 				out.writeUTF(clienteRun(cs,accion,tupla));
@@ -94,9 +109,9 @@ public class ThreadLinda extends Thread{
 	public void run() {
 		try {
 			System.out.println("Cliente en línea");
-	        DataInputStream in = new DataInputStream(cs.getInputStream());
-	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
-	        ObjectInputStream inObject = new ObjectInputStream(cs.getInputStream());
+	        DataInputStream in = new DataInputStream(csGen.getInputStream());
+	        DataOutputStream out = new DataOutputStream(csGen.getOutputStream());
+	        ObjectInputStream inObject = new ObjectInputStream(csGen.getInputStream());
 	        out.writeUTF("BIENVENIDO AL SISTEMA LINDA");
 	        while(true) {
 				String accion = in.readUTF();
@@ -104,7 +119,7 @@ public class ThreadLinda extends Thread{
 	            if(accion.equals("terminar")) break;
 	            else gestionConexion(accion,in,out,inObject);
 			}
-	        cs.close();
+	        csGen.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 	    }
