@@ -5,6 +5,7 @@ import java.io.IOException;
 public class Servidores extends Conexion{
 	int numero;
 	BaseDeDatos tuplas1;
+	BaseDeDatos tuplas1Replica;
 	BaseDeDatos tuplas2;
 	BaseDeDatos tuplas3;
 	public Servidores(int numero) throws IOException {
@@ -31,6 +32,22 @@ public class Servidores extends Conexion{
             System.out.println(e.getMessage());
         }
 	}
+	
+	private void startServ1Replica() {
+		try {
+			this.tuplas1Replica = new BaseDeDatos();
+        	while(true) {
+        		System.out.println("Esperando...");
+        		cs = ss1.accept(); 
+                ThreadServidores hilo = new ThreadServidores(cs,tuplas1Replica);
+                hilo.start();
+        	}
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+	}
+	
 	
 	private void startServ2() {
 		try {
@@ -64,6 +81,7 @@ public class Servidores extends Conexion{
     public void startServer() {
         if(numero == 1) startServ1();
         else if(numero == 2) startServ2();
-        else startServ3();
+        else if(numero == 3)startServ3();
+        else startServ1Replica();
     }
 }

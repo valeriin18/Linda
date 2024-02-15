@@ -30,6 +30,10 @@ public class MainServidor {
 		  Servidores serv = new Servidores(1);
 	      System.out.println("Iniciando servidor1\n");
 	      serv.startServer();
+	  }else if(decision.equals("replica")) {
+		  Servidores serv = new Servidores(4);
+	      System.out.println("Iniciando replica\n");
+	      serv.startServer();
 	  }else if(decision.equals("tuplas2")) {
 		  Servidores serv = new Servidores(2);
 	      System.out.println("Iniciando servidor2\n");

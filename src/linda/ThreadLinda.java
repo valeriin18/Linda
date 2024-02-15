@@ -15,9 +15,11 @@ public class ThreadLinda extends Thread{
 	private final int PUERTO1 = 4321;
 	private final int PUERTO2 = 5678;
 	private final int PUERTO3 = 9101;
-	private final String HOST1 = "localhost";
-	private final String HOST2 = "localhost";
-	private final String HOST3 = "localhost";
+	private final int PUERTOReplica = 6587;
+	private final String HOST1 = "172.30.100.145";
+	private final String HOST2 = "172.30.100.145";
+	private final String HOST3 = "172.30.100.145";
+	private final String HOSTReplica = "172.30.100.145";
 	public ThreadLinda(Socket cs) {
 		this.cs = cs;
 	}
@@ -54,9 +56,26 @@ public class ThreadLinda extends Thread{
 			ArrayList<String> tupla = (ArrayList<String>) inObject.readObject();
 			System.out.println(tupla);
 			if(tupla.size() <= 3) {
-				Socket cs = new Socket(HOST1,PUERTO1);
-				out.writeUTF(clienteRun(cs,accion,tupla));
+				Socket cs = null;
+				Socket csReplica = null;
+				Boolean activo = true;
+				try {
+					cs = new Socket(HOST1,PUERTO1);
+					out.writeUTF(clienteRun(cs,accion,tupla));
+				}catch(IOException e) {
+					activo = false;
+				}try {
+					csReplica = new Socket(HOSTReplica,PUERTOReplica);
+					if(activo == false) {
+						out.writeUTF(clienteRun(csReplica,accion,tupla));
+					}else {
+						clienteRun(csReplica,accion,tupla);
+					}
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
 				cs.close();
+				csReplica.close();
 			}else if(tupla.size() > 3 && tupla.size() <= 5) {
 				Socket cs = new Socket(HOST2,PUERTO2);
 				out.writeUTF(clienteRun(cs,accion,tupla));

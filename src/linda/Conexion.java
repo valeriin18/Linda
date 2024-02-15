@@ -16,11 +16,13 @@ public class Conexion {
     public static int PUERTOLinda1= 4321; // Puerto para que Linda se conecte al servidor
     public static int PUERTOLinda2 = 5678; // Puerto para que Linda se conecte al servidor
     public static int PUERTOLinda3 = 9101; // Puerto para que Linda se conecte al servidor
+    public static int puertoLindaReplica = 6587; // Puerto para que Linda se conecte al servidor
     private final String HOST = "localhost"; // Host para la conexió
     protected ServerSocket ss; // Socket del servidor
     protected ServerSocket ss1; // Socket del servidor
     protected ServerSocket ss2; // Socket del servidor
     protected ServerSocket ss3; // Socket del servidor
+    protected ServerSocket ssReplica; // Socket del servidor
     protected Socket cs; // Socket del cliente
 
     public Conexion(String tipo, int numero) throws IOException { 
@@ -29,7 +31,8 @@ public class Conexion {
         } else if (tipo.equalsIgnoreCase("servidor")) {
         	if(numero == 1) ss1 = new ServerSocket(PUERTOLinda1);
         	else if(numero == 2) ss2 = new ServerSocket(PUERTOLinda2);
-        	else ss3 = new ServerSocket(PUERTOLinda3);
+        	else if(numero == 3) ss3 = new ServerSocket(PUERTOLinda3);
+        	else ssReplica = new ServerSocket(puertoLindaReplica);
         } else if (tipo.equalsIgnoreCase("cliente")) {
             cs = new Socket(HOST, PUERTO);
         }
