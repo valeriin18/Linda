@@ -1,6 +1,10 @@
 package linda;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class Servidores extends Conexion{
 	int numero;
@@ -23,8 +27,13 @@ public class Servidores extends Conexion{
 			this.tuplas1 = new BaseDeDatos();
         	while(true) {
         		System.out.println("Esperando...");
-        		cs = ss1.accept(); 
-                ThreadServidores hilo = new ThreadServidores(cs,tuplas1);
+        		cs = ss1.accept();
+        		System.out.println("Cliente en línea");
+        		DataInputStream in = new DataInputStream(cs.getInputStream());
+    	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
+    	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
+    	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
+                ThreadServidores hilo = new ThreadServidores(cs,tuplas1,in,out,inObj,outObj);
                 hilo.start();
         	}
         }
@@ -39,7 +48,12 @@ public class Servidores extends Conexion{
         	while(true) {
         		System.out.println("Esperando...");
         		cs = ssReplica.accept(); 
-                ThreadServidores hilo = new ThreadServidores(cs,tuplas1Replica);
+        		System.out.println("Cliente en línea");
+        		DataInputStream in = new DataInputStream(cs.getInputStream());
+    	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
+    	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
+    	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
+    	        ThreadServidores hilo = new ThreadServidores(cs,tuplas1Replica,in,out,inObj,outObj);
                 hilo.start();
         	}
         }
@@ -55,7 +69,12 @@ public class Servidores extends Conexion{
         	while(true) {
         		System.out.println("Esperando...");
         		cs = ss2.accept(); 
-                ThreadServidores hilo = new ThreadServidores(cs,tuplas2);
+        		System.out.println("Cliente en línea");
+        		DataInputStream in = new DataInputStream(cs.getInputStream());
+    	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
+    	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
+    	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
+    	        ThreadServidores hilo = new ThreadServidores(cs,tuplas2,in,out,inObj,outObj);
                 hilo.start();
         	}
         }
@@ -70,7 +89,12 @@ public class Servidores extends Conexion{
         	while(true) {
         		System.out.println("Esperando...");
         		cs = ss3.accept(); 
-                ThreadServidores hilo = new ThreadServidores(cs,tuplas3);
+        		System.out.println("Cliente en línea");
+        		DataInputStream in = new DataInputStream(cs.getInputStream());
+    	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
+    	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
+    	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
+    	        ThreadServidores hilo = new ThreadServidores(cs,tuplas3,in,out,inObj,outObj);
                 hilo.start();
         	}
         }
@@ -82,6 +106,6 @@ public class Servidores extends Conexion{
         if(numero == 1) startServ1();
         else if(numero == 2) startServ2();
         else if(numero == 3)startServ3();
-        else startServ1Replica();
+        else if(numero == 4)startServ1Replica();
     }
 }

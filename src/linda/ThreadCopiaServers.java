@@ -14,8 +14,8 @@ import java.util.TimerTask;
 public class ThreadCopiaServers extends Thread {
 	private final int PUERTO1 = 4321;
 	private final int PUERTOReplica = 6587;
-	private final String HOST1 = "172.30.100.145";
-	private final String HOSTReplica = "172.30.100.145";
+	private final String HOST1 = "localhost";
+	private final String HOSTReplica = "localhost";
 	private Socket cs = null;
 	private Socket replica = null;
 	
@@ -38,7 +38,6 @@ public class ThreadCopiaServers extends Thread {
 				 outObj.writeObject(recivo);
 				 serv1 = true;
 			 }
-			 cs.close();
 		 }catch(Exception e) {
 			 serv1 = false;
 		 }try {
@@ -57,7 +56,6 @@ public class ThreadCopiaServers extends Thread {
 				 outObjR.writeObject(recivo);
 				 servReplica = true;
 			 }
-			 replica.close();
 		 }catch(Exception e) {
 			 servReplica = false;
 		 }

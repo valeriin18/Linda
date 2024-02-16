@@ -13,9 +13,9 @@ import java.net.Socket;
 public class Conexion {
     // Puertos para la conexión. Deben ser diferentes para evitar conflictos.
     private final int PUERTO = 1234; // Puerto para que los clientes se conecten a Linda
-    public static int PUERTOLinda1= 4321; // Puerto para que Linda se conecte al servidor
-    public static int PUERTOLinda2 = 5678; // Puerto para que Linda se conecte al servidor
-    public static int PUERTOLinda3 = 9101; // Puerto para que Linda se conecte al servidor
+    private final int PUERTO1 = 4321;
+	private final int PUERTO2 = 5678;
+	private final int PUERTO3 = 9101;
     public static int puertoLindaReplica = 6587; // Puerto para que Linda se conecte al servidor
     private final String HOST = "localhost"; // Host para la conexió
     protected ServerSocket ss; // Socket del servidor
@@ -29,10 +29,10 @@ public class Conexion {
         if (tipo.equalsIgnoreCase("servidorLinda")) {
             ss = new ServerSocket(PUERTO);
         } else if (tipo.equalsIgnoreCase("servidor")) {
-        	if(numero == 1) ss1 = new ServerSocket(PUERTOLinda1);
-        	else if(numero == 2) ss2 = new ServerSocket(PUERTOLinda2);
-        	else if(numero == 3) ss3 = new ServerSocket(PUERTOLinda3);
-        	else ssReplica = new ServerSocket(puertoLindaReplica);
+        	if(numero == 1) ss1 = new ServerSocket(PUERTO1);
+        	else if(numero == 2) ss2 = new ServerSocket(PUERTO2);
+        	else if(numero == 3) ss3 = new ServerSocket(PUERTO3);
+        	else if(numero == 4) ssReplica = new ServerSocket(puertoLindaReplica);
         } else if (tipo.equalsIgnoreCase("cliente")) {
             cs = new Socket(HOST, PUERTO);
         }

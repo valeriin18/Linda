@@ -11,9 +11,18 @@ import java.util.ArrayList;
 public class ThreadServidores extends Thread {
 	private Socket cs;
 	private BaseDeDatos tuplas;
-	public ThreadServidores(Socket cs,BaseDeDatos tuplas) {
+	DataInputStream in;
+	DataOutputStream out;
+	ObjectInputStream inObj;
+	ObjectOutputStream outObj;
+	public ThreadServidores(Socket cs,BaseDeDatos tuplas,DataInputStream in,DataOutputStream out,
+			ObjectInputStream inObj,ObjectOutputStream outObj) {
 		this.cs = cs;
 		this.tuplas = tuplas;
+		this.in = in;
+		this.out = out;
+		this.inObj = inObj;
+		this.outObj = outObj;
 	}
 	public void subida(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
 		try {
@@ -36,6 +45,7 @@ public class ThreadServidores extends Thread {
 			out.writeUTF("Accion recibida todo correcto, Linda");
 			ArrayList<String> tupla = (ArrayList<String>) inObj.readObject(); 
 			tuplas.add(tupla);
+			System.out.println(tuplas);
 			out.writeUTF("Tupla añadida correctamente!");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,11 +80,7 @@ public class ThreadServidores extends Thread {
 	
 	public void run() {
 		try {
-			System.out.println("Cliente en línea");
-	        DataInputStream in = new DataInputStream(cs.getInputStream());
-	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
-	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
-	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
+	        System.out.println("hola");
 	        String mensaje = in.readUTF();
 	        if(mensaje.equals("PostNote")) postNote(in,out,inObj);
 	        else if(mensaje.equals("RemoveNote")) removeNote(in,out,inObj);

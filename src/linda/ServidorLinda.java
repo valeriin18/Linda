@@ -1,6 +1,9 @@
 package linda;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * Esta clase inicia el servidor creando hilos para cada conexion.
@@ -18,11 +21,15 @@ public class ServidorLinda extends Conexion {
     public void startServer() {
         try {
         	while(true) {
-        		ThreadCopiaServers copia = new ThreadCopiaServers(); 
-				copia.start();
+        		//ThreadCopiaServers copia = new ThreadCopiaServers(); 
+				//copia.start();
         		System.out.println("Esperando...");
                 cs = ss.accept(); 
-                ThreadLinda hilo = new ThreadLinda(cs);
+                System.out.println("Cliente en línea");
+    	        DataInputStream in = new DataInputStream(cs.getInputStream());
+    	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
+    	        ObjectInputStream inObject = new ObjectInputStream(cs.getInputStream());
+                ThreadLinda hilo = new ThreadLinda(cs,in,out,inObject);
                 hilo.start();
         	}
         }
