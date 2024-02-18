@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -15,6 +16,14 @@ public class ThreadServidores extends Thread {
 		this.tuplas = tuplas;
 	}
 	
+	public BaseDeDatos getTuplas() {
+		return tuplas;
+	}
+
+	public void setTuplas(BaseDeDatos tuplas) {
+		this.tuplas = tuplas;
+	}
+
 	public void postNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
 		try {
 			out.writeUTF("Accion recibida todo correcto, Linda");
@@ -58,9 +67,12 @@ public class ThreadServidores extends Thread {
 	        DataInputStream in = new DataInputStream(cs.getInputStream());
 	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
 	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
+	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
 	        String mensaje = in.readUTF();
 	        if(mensaje.equals("PostNote")) postNote(in,out,inObj);
 	        else if(mensaje.equals("RemoveNote")) removeNote(in,out,inObj);
+	        //else if(mensaje.equals("bajar")) outObj.writeObject(getTuplas());
+	        //else if(mensaje.equals("subir")) setTuplas((BaseDeDatos)inObj.readObject());
 	        else readNote(in,out,inObj);
 	        cs.close();
 		}catch(Exception e) {
