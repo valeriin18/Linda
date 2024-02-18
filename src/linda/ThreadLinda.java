@@ -27,13 +27,13 @@ public class ThreadLinda extends Thread{
 	private String clienteRun(Socket cs, String tipo, ArrayList<String> tupla) {
 		String devolucion = "";
 		try {
-			DataInputStream in = new DataInputStream(cs.getInputStream());
+			ObjectInputStream in = new ObjectInputStream(cs.getInputStream());
 			DataOutputStream out = new DataOutputStream(cs.getOutputStream());
 			ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
 			out.writeUTF(tipo);
-			System.out.println(in.readUTF());
+			System.out.println(in.readObject());
 			outObj.writeObject(tupla);
-			devolucion = in.readUTF();
+			devolucion = (String) in.readObject();
 			System.out.println(devolucion);
 		} catch (Exception e) {
 			e.printStackTrace();

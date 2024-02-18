@@ -24,38 +24,38 @@ public class ThreadServidores extends Thread {
 		this.tuplas = tuplas;
 	}
 
-	public void postNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
+	public void postNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
-			out.writeUTF("Accion recibida todo correcto, Linda");
+			out.writeObject("Accion recibida todo correcto, Linda");
 			ArrayList<String> tupla = (ArrayList<String>) inObj.readObject(); 
 			tuplas.add(tupla);
-			out.writeUTF("Tupla añadida correctamente!");
+			out.writeObject("Tupla añadida correctamente!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void removeNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
+	public void removeNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
 			out.writeUTF("Accion recibida todo correcto, Linda");
 			ArrayList<String> tupla = (ArrayList<String>) inObj.readObject(); 
 			ArrayList<String>tuplaAborrar = tuplas.search(tupla);
 			if( tuplaAborrar == null) {
-				out.writeUTF("Error la tupla no se encuentra en la base de datos");
+				out.writeObject("Error la tupla no se encuentra en la base de datos");
 			}else {
-				out.writeUTF(tuplas.remove(tuplaAborrar));
+				out.writeObject(tuplas.remove(tuplaAborrar));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void readNote(DataInputStream in, DataOutputStream out, ObjectInputStream inObj) {
+	public void readNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
-			out.writeUTF("Accion recibida todo correcto, Linda");
+			out.writeObject("Accion recibida todo correcto, Linda");
 			ArrayList<String> tupla = (ArrayList<String>) inObj.readObject(); 
 			String StringtuplaEncontrada = tuplas.read(tupla);
-			out.writeUTF(StringtuplaEncontrada);
+			out.writeObject(StringtuplaEncontrada);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,15 +65,15 @@ public class ThreadServidores extends Thread {
 		try {
 			System.out.println("Cliente en línea");
 	        DataInputStream in = new DataInputStream(cs.getInputStream());
-	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
-	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
 	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
+	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
+	        
 	        String mensaje = in.readUTF();
-	        if(mensaje.equals("PostNote")) postNote(in,out,inObj);
-	        else if(mensaje.equals("RemoveNote")) removeNote(in,out,inObj);
-	        //else if(mensaje.equals("bajar")) outObj.writeObject(getTuplas());
-	        //else if(mensaje.equals("subir")) setTuplas((BaseDeDatos)inObj.readObject());
-	        else readNote(in,out,inObj);
+	        if(mensaje.equals("PostNote")) postNote(outObj,inObj);
+	        else if(mensaje.equals("RemoveNote")) removeNote(outObj,inObj);
+	        else if(mensaje.equals("bajar")) outObj.writeObject(getTuplas());
+	        else if(mensaje.equals("subir")) setTuplas((BaseDeDatos)inObj.readObject());
+	        else readNote(outObj,inObj);
 	        cs.close();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
