@@ -18,28 +18,32 @@ public class ThreadCopiaServidores extends Thread{
 		boolean replicaActivo = true;
 		while(true) {
 			try {
+				BaseDeDatos descarga = null;
 				try (Socket cs = new Socket(HOST1,PUERTO1)) {
 					if(serv1Activo == false) {
 						try (Socket csReplica = new Socket(HOSTReplica,PUERTOReplica)) {
 							DataOutputStream out = new DataOutputStream(csReplica.getOutputStream());
 							out.writeUTF("bajar");
 							ObjectInputStream inObj = new ObjectInputStream(csReplica.getInputStream());
-							BaseDeDatos descarga = (BaseDeDatos) inObj.readObject();
+							descarga = (BaseDeDatos) inObj.readObject();
 							System.out.println(descarga.content);
 							csReplica.close();
 							DataOutputStream out1 = new DataOutputStream(cs.getOutputStream());
 							out1.writeUTF("subir");
 							ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
 							outObj.writeObject(descarga);
-							cs.close();
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
+						}finally {
+							serv1Activo = true;
+							cs.close();
 						}
 					}
+					System.out.println("La descarga es: " + descarga);
 					cs.close();
 				} catch (IOException e) {
 					serv1Activo = false;
-					e.printStackTrace();
+					System.out.println("\nError el servidor 1 esta caido\n");
 				}
 				try (Socket csReplica = new Socket(HOSTReplica,PUERTOReplica)) {
 					if(replicaActivo == false) {
@@ -47,21 +51,23 @@ public class ThreadCopiaServidores extends Thread{
 							DataOutputStream out = new DataOutputStream(cs.getOutputStream());
 							out.writeUTF("bajar");
 							ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
-							BaseDeDatos descarga = (BaseDeDatos) inObj.readObject();
+							descarga = (BaseDeDatos) inObj.readObject();
 							cs.close();
 							DataOutputStream out1 = new DataOutputStream(csReplica.getOutputStream());
 							out1.writeUTF("subir");
 							ObjectOutputStream outObj = new ObjectOutputStream(csReplica.getOutputStream());
 							outObj.writeObject(descarga);
-							csReplica.close();
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
+						}finally {
+							replicaActivo = true;
+							csReplica.close();
 						}
 					}
 					csReplica.close();
 				} catch (IOException e) {
 					replicaActivo = false;
-					e.printStackTrace();
+					System.out.println("\nError el servidor replica esta caido\n");
 				}
 				Thread.sleep(60000);
 			} catch (InterruptedException e) {

@@ -74,7 +74,7 @@ public class ThreadServidores extends Thread {
 	        else if(mensaje.equals("bajar")) outObj.writeObject(getTuplas());
 	        else if(mensaje.equals("subir")) setTuplas((BaseDeDatos)inObj.readObject());
 	        else readNote(outObj,inObj);
-	        System.out.println(tuplas.content);
+	        System.out.println("El contenido: " + tuplas.content);
 	        cs.close();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
