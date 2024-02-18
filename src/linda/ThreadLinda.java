@@ -16,10 +16,10 @@ public class ThreadLinda extends Thread{
 	private final int PUERTO2 = 5678;
 	private final int PUERTO3 = 9101;
 	private final int PUERTOReplica = 6587;
-	private final String HOST1 = "172.30.100.145";
-	private final String HOST2 = "172.30.100.145";
-	private final String HOST3 = "172.30.100.145";
-	private final String HOSTReplica = "172.30.100.145";
+	private final String HOST1 = "localhost";
+	private final String HOST2 = "localhost";
+	private final String HOST3 = "localhost";
+	private final String HOSTReplica = "localhost";
 	public ThreadLinda(Socket cs) {
 		this.cs = cs;
 	}
@@ -62,20 +62,21 @@ public class ThreadLinda extends Thread{
 				try {
 					cs = new Socket(HOST1,PUERTO1);
 					out.writeUTF(clienteRun(cs,accion,tupla));
+					cs.close();
 				}catch(IOException e) {
 					activo = false;
 				}try {
 					csReplica = new Socket(HOSTReplica,PUERTOReplica);
 					if(activo == false) {
 						out.writeUTF(clienteRun(csReplica,accion,tupla));
+						csReplica.close();
 					}else {
 						clienteRun(csReplica,accion,tupla);
+						csReplica.close();
 					}
 				}catch(IOException e) {
 					e.printStackTrace();
 				}
-				cs.close();
-				csReplica.close();
 			}else if(tupla.size() > 3 && tupla.size() <= 5) {
 				Socket cs = new Socket(HOST2,PUERTO2);
 				out.writeUTF(clienteRun(cs,accion,tupla));

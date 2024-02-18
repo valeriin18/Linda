@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ThreadServidores extends Thread {
-	private Socket cs;
+	Socket cs;
 	private BaseDeDatos tuplas;
 	public ThreadServidores(Socket cs,BaseDeDatos tuplas) {
 		this.cs = cs;

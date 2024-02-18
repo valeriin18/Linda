@@ -19,8 +19,9 @@ public class MainServidor {
 	  while(true) {
 		  decision = input.nextLine();
 		  if (decision.equals("linda") || decision.equals("tuplas1") || 
-			  decision.equals("tuplas2") || decision.equals("tuplas3")) break;
-		  System.out.println("Error elige una opcion correcta: linda, tuplas1, tuplas2, tuplas3");
+			  decision.equals("tuplas2") || decision.equals("tuplas3")
+			  || decision.equals("replica")) break;
+		  System.out.println("Error elige una opcion correcta: linda, tuplas1,replica, tuplas2, tuplas3");
 	  }
 	  if (decision.equals("linda")) {
 		  ServidorLinda serv = new ServidorLinda();
