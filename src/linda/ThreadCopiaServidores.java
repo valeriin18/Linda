@@ -19,12 +19,13 @@ public class ThreadCopiaServidores extends Thread{
 		while(true) {
 			try {
 				try (Socket cs = new Socket(HOST1,PUERTO1)) {
-					if(!(serv1Activo)) {
+					if(serv1Activo == false) {
 						try (Socket csReplica = new Socket(HOSTReplica,PUERTOReplica)) {
 							DataOutputStream out = new DataOutputStream(csReplica.getOutputStream());
 							out.writeUTF("bajar");
 							ObjectInputStream inObj = new ObjectInputStream(csReplica.getInputStream());
 							BaseDeDatos descarga = (BaseDeDatos) inObj.readObject();
+							System.out.println(descarga.content);
 							csReplica.close();
 							DataOutputStream out1 = new DataOutputStream(cs.getOutputStream());
 							out1.writeUTF("subir");
@@ -41,7 +42,7 @@ public class ThreadCopiaServidores extends Thread{
 					e.printStackTrace();
 				}
 				try (Socket csReplica = new Socket(HOSTReplica,PUERTOReplica)) {
-					if(!(replicaActivo)) {
+					if(replicaActivo == false) {
 						try (Socket cs = new Socket(HOSTReplica,PUERTOReplica)) {
 							DataOutputStream out = new DataOutputStream(cs.getOutputStream());
 							out.writeUTF("bajar");

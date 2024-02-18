@@ -37,7 +37,7 @@ public class ThreadServidores extends Thread {
 	
 	public void removeNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
-			out.writeUTF("Accion recibida todo correcto, Linda");
+			out.writeObject("Accion recibida todo correcto, Linda");
 			ArrayList<String> tupla = (ArrayList<String>) inObj.readObject(); 
 			ArrayList<String>tuplaAborrar = tuplas.search(tupla);
 			if( tuplaAborrar == null) {
@@ -74,6 +74,7 @@ public class ThreadServidores extends Thread {
 	        else if(mensaje.equals("bajar")) outObj.writeObject(getTuplas());
 	        else if(mensaje.equals("subir")) setTuplas((BaseDeDatos)inObj.readObject());
 	        else readNote(outObj,inObj);
+	        System.out.println(tuplas.content);
 	        cs.close();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

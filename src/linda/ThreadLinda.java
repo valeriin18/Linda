@@ -75,7 +75,6 @@ public class ThreadLinda extends Thread{
 						csReplica.close();
 					}
 				}catch(IOException e) {
-					e.printStackTrace();
 				}
 			}else if(tupla.size() > 3 && tupla.size() <= 5) {
 				Socket cs = new Socket(HOST2,PUERTO2);
