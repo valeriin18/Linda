@@ -16,12 +16,12 @@ public class ThreadServidores extends Thread {
 		this.tuplas = tuplas;
 	}
 	
-	public BaseDeDatos getTuplas() {
-		return tuplas;
+	public ArrayList<ArrayList<String>> getTuplas() {
+		return tuplas.content;
 	}
 
-	public void setTuplas(BaseDeDatos tuplas) {
-		this.tuplas = tuplas;
+	public void setTuplas(ArrayList<ArrayList<String>> tuplas) {
+		this.tuplas.content = tuplas;
 	}
 
 	public void postNote(ObjectOutputStream out, ObjectInputStream inObj) {
@@ -64,17 +64,19 @@ public class ThreadServidores extends Thread {
 	public void run() {
 		try {
 			System.out.println("Cliente en línea");
-	        DataInputStream in = new DataInputStream(cs.getInputStream());
 	        ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
 	        ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
-	        
-	        String mensaje = in.readUTF();
+	        String mensaje = (String)inObj.readObject();
 	        if(mensaje.equals("PostNote")) postNote(outObj,inObj);
 	        else if(mensaje.equals("RemoveNote")) removeNote(outObj,inObj);
-	        else if(mensaje.equals("bajar")) outObj.writeObject(getTuplas());
-	        else if(mensaje.equals("subir")) setTuplas((BaseDeDatos)inObj.readObject());
+	        else if(mensaje.equals("bajar")) {
+	        	ArrayList<ArrayList<String>> descarga = getTuplas();
+	        	outObj.writeObject(descarga);
+	        }
+	        else if(mensaje.equals("subir")) setTuplas((ArrayList<ArrayList<String>>)inObj.readObject());
+	        else if(mensaje.equals("vida")) outObj.writeObject("Esto es una linea de vida");
 	        else readNote(outObj,inObj);
-	        System.out.println("El contenido: " + tuplas.content);
+	        System.out.println(tuplas.content);
 	        cs.close();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

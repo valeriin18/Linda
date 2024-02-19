@@ -28,9 +28,8 @@ public class ThreadLinda extends Thread{
 		String devolucion = "";
 		try {
 			ObjectInputStream in = new ObjectInputStream(cs.getInputStream());
-			DataOutputStream out = new DataOutputStream(cs.getOutputStream());
 			ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
-			out.writeUTF(tipo);
+			outObj.writeObject(tipo);
 			System.out.println(in.readObject());
 			outObj.writeObject(tupla);
 			devolucion = (String) in.readObject();
