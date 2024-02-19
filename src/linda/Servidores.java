@@ -2,6 +2,9 @@ package linda;
 
 import java.io.IOException;
 
+/**
+ * esta clase hace...
+ */
 public class Servidores extends Conexion{
 	int numero;
 	BaseDeDatos tuplas1;
@@ -32,7 +35,10 @@ public class Servidores extends Conexion{
             System.out.println(e.getMessage());
         }
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	private void startServ1Replica() {
 		try {
 			this.tuplas1Replica = new BaseDeDatos();
@@ -47,8 +53,10 @@ public class Servidores extends Conexion{
             System.out.println(e.getMessage());
         }
 	}
-	
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	private void startServ2() {
 		try {
 			this.tuplas2 = new BaseDeDatos();
@@ -63,7 +71,10 @@ public class Servidores extends Conexion{
             System.out.println(e.getMessage());
         }
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	private void startServ3() {
 		try {
 			this.tuplas3 = new BaseDeDatos();
@@ -78,6 +89,10 @@ public class Servidores extends Conexion{
             System.out.println(e.getMessage());
         }
 	}
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
     public void startServer() {
         if(numero == 1) startServ1();
         else if(numero == 2) startServ2();

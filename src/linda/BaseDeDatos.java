@@ -3,6 +3,9 @@ package linda;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
+/**
+ * esta clase hace...
+ */
 public class BaseDeDatos {
 	ArrayList<ArrayList<String>> content;
 	private Semaphore s1;
@@ -11,7 +14,10 @@ public class BaseDeDatos {
 		this.content = new ArrayList<>();
 		this.s1 = new Semaphore(2);
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public String read(ArrayList<String> tupla) {
 		try {
 			s1.acquire(1);
@@ -28,6 +34,10 @@ public class BaseDeDatos {
 			return(tuplaEncontrada.toString());
 		}
 	}
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public ArrayList<String> search(ArrayList<String> tupla){
 		boolean seEncuentra = false;
 		ArrayList<String> tuplaABorrar = new ArrayList<>();
@@ -52,7 +62,10 @@ public class BaseDeDatos {
 			return tuplaABorrar;
 		}
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public synchronized String remove(ArrayList<String> tupla) {
 		try {
 			s1.acquire(2);
@@ -71,7 +84,8 @@ public class BaseDeDatos {
 			}
 			content.remove(indice);
 			return("Tupla borrada correctamente!");
-		}else return("No es posible borrar el dato puesto que la base de datos esta vacia.");
+		}else return("No es posible borrar el dato puesto que la base "
+				+ "de datos esta vacia.");
 	}
 	
 	public synchronized void add(ArrayList<String> tupla) {
@@ -80,7 +94,9 @@ public class BaseDeDatos {
 			content.add(tupla);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}finally {
+			s1.release(1);
 		}
-		s1.release(1);
+		
 	}
 }

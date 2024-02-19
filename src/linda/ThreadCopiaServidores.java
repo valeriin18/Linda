@@ -9,6 +9,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * esta clase hace...
+ */
 public class ThreadCopiaServidores extends Thread{
 	private final int PUERTO1 = 4321;
 	private final int PUERTOReplica = 6587;
@@ -17,7 +20,10 @@ public class ThreadCopiaServidores extends Thread{
 	boolean serv1Activo = true;
 	boolean replicaActivo = true;
 	
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void vidaCopiaServidor1() throws ClassNotFoundException {
 		try {
 			Socket cs = new Socket(HOST1,PUERTO1);
@@ -41,10 +47,13 @@ public class ThreadCopiaServidores extends Thread{
 			cs.close();
 		}catch(IOException e) {
 			serv1Activo = false;
-			System.out.println("Error servidor 1 caido.");
+			System.out.println("\nError servidor 1 caido.");
 		} 
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void vidaCopiaServidorReplica() throws ClassNotFoundException {
 		try {
 			Socket csReplica = new Socket(HOSTReplica,PUERTOReplica);
@@ -54,7 +63,6 @@ public class ThreadCopiaServidores extends Thread{
 				outObj.writeObject("bajar");
 				ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
 				ArrayList<ArrayList<String>> descarga = (ArrayList<ArrayList<String>>) inObj.readObject();
-				System.out.println("DESCARGA: " + descarga);
 				cs.close();
 				ObjectOutputStream outObj1 = new ObjectOutputStream(csReplica.getOutputStream());
 				outObj1.writeObject("subir");
@@ -69,10 +77,13 @@ public class ThreadCopiaServidores extends Thread{
 			csReplica.close();
 		}catch(IOException e) {
 			replicaActivo = false;
-			System.out.println("Error servidor replica caido.");
+			System.out.println("\nError servidor replica caido.");
 		} 
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void run() {
 		while(true) {
 			try {

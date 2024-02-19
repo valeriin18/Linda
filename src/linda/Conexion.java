@@ -10,20 +10,22 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * esta clase hace...
+ */
 public class Conexion {
-    // Puertos para la conexión. Deben ser diferentes para evitar conflictos.
-    private final int PUERTO = 1234; // Puerto para que los clientes se conecten a Linda
-    public static int PUERTOLinda1= 4321; // Puerto para que Linda se conecte al servidor
-    public static int PUERTOLinda2 = 5678; // Puerto para que Linda se conecte al servidor
-    public static int PUERTOLinda3 = 9101; // Puerto para que Linda se conecte al servidor
-    public static int puertoLindaReplica = 6587; // Puerto para que Linda se conecte al servidor
-    private final String HOST = "localhost"; // Host para la conexió
-    protected ServerSocket ss; // Socket del servidor
-    protected ServerSocket ss1; // Socket del servidor
-    protected ServerSocket ss2; // Socket del servidor
-    protected ServerSocket ss3; // Socket del servidor
-    protected ServerSocket ssReplica; // Socket del servidor
-    protected Socket cs; // Socket del cliente
+    private final int PUERTO = 1234; 
+    public static int PUERTOLinda1= 4321; 
+    public static int PUERTOLinda2 = 5678; 
+    public static int PUERTOLinda3 = 9101;
+    public static int puertoLindaReplica = 6587; 
+    private final String HOST = "localhost";
+    protected ServerSocket ss; 
+    protected ServerSocket ss1; 
+    protected ServerSocket ss2;
+    protected ServerSocket ss3; 
+    protected ServerSocket ssReplica;
+    protected Socket cs;
 
     public Conexion(String tipo, int numero) throws IOException { 
         if (tipo.equalsIgnoreCase("servidorLinda")) {

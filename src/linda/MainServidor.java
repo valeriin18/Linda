@@ -14,14 +14,16 @@ public class MainServidor {
 	 */
   public static void main(String[] args) throws IOException {
 	  Scanner input = new Scanner(System.in);
-	  System.out.println("Elige que tipo de servidor quieres levantar: Linda, tuplas1, tuplas2, tuplas3 \n ==>>");
+	  System.out.println("\nElige que tipo de servidor quieres levantar: Linda, "
+	  		+ "tuplas1, replica, tuplas2, tuplas3 \n ==>>");
 	  String decision = "";
 	  while(true) {
 		  decision = input.nextLine();
 		  if (decision.equals("linda") || decision.equals("tuplas1") || 
 			  decision.equals("tuplas2") || decision.equals("tuplas3")
 			  || decision.equals("replica")) break;
-		  System.out.println("Error elige una opcion correcta: linda, tuplas1,replica, tuplas2, tuplas3");
+		  System.out.println("\nError elige una opcion correcta: linda, tuplas1, "
+		  		+ "replica, tuplas2, tuplas3");
 	  }
 	  if (decision.equals("linda")) {
 		  ServidorLinda serv = new ServidorLinda();
@@ -33,7 +35,7 @@ public class MainServidor {
 	      serv.startServer();
 	  }else if(decision.equals("replica")) {
 		  Servidores serv = new Servidores(4);
-	      System.out.println("Iniciando replica\n");
+	      System.out.println("Iniciando servidor replica\n");
 	      serv.startServer();
 	  }else if(decision.equals("tuplas2")) {
 		  Servidores serv = new Servidores(2);

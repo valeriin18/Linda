@@ -1,13 +1,13 @@
 package linda;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * esta clase hace...
+ */
 public class ThreadServidores extends Thread {
 	Socket cs;
 	private BaseDeDatos tuplas;
@@ -15,15 +15,24 @@ public class ThreadServidores extends Thread {
 		this.cs = cs;
 		this.tuplas = tuplas;
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public ArrayList<ArrayList<String>> getTuplas() {
 		return tuplas.content;
 	}
-
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void setTuplas(ArrayList<ArrayList<String>> tuplas) {
 		this.tuplas.content = tuplas;
 	}
-
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void postNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
 			out.writeObject("Accion recibida todo correcto, Linda");
@@ -34,7 +43,10 @@ public class ThreadServidores extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void removeNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
 			out.writeObject("Accion recibida todo correcto, Linda");
@@ -49,7 +61,10 @@ public class ThreadServidores extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void readNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
 			out.writeObject("Accion recibida todo correcto, Linda");
@@ -60,7 +75,10 @@ public class ThreadServidores extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void run() {
 		try {
 			System.out.println("Cliente en línea");

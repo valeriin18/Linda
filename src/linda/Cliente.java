@@ -17,12 +17,12 @@ public class Cliente extends Conexion {
     public ArrayList<String> creacionTupla(Scanner entrada, String eleccionP){
     	ArrayList<String> tupla = new ArrayList<>();
     	while(true) {
-    		System.out.println("Introduce los strings que constituyen la tupla, \n"
+    		System.out.println("\nIntroduce los strings que constituyen la tupla, \n"
     						 + "si se introduce \"EXIT\" se terminara la introduccion.");
     		String eleccion = entrada.nextLine();
     		if(eleccion.contains("?") && eleccionP.equals("1"))System.out.println("Error al añadir no puedes ingresar ?");
     		else if(eleccion.equals("EXIT")) break;
-    		else if(eleccion.equals("")) System.out.println("Error debe introducir algun caracter.");
+    		else if(eleccion.equals("")) System.out.println("\nError debe introducir algun caracter.");
     		else tupla.add(eleccion);
     	}
     	return tupla;
@@ -37,48 +37,47 @@ public class Cliente extends Conexion {
     public void startClient() {
     	try {
 			DataInputStream in = new DataInputStream(cs.getInputStream());
-            DataOutputStream out = new DataOutputStream(cs.getOutputStream());
-            ObjectOutputStream outObject = new ObjectOutputStream(cs.getOutputStream());
+            ObjectOutputStream out = new ObjectOutputStream(cs.getOutputStream());
             String mensaje = in.readUTF();
             System.out.println(mensaje);
             Scanner entrada = new Scanner(System.in);
             while(true) {
-            	System.out.print("Elija una de las siguientes opciones: \n"
+            	System.out.print("\nElija una de las siguientes opciones: \n"
             			+ " 1.PostNote. \n 2.RemoveNote. \n 3.ReadNote. \n"
             			+ " 4.Salir. \n==>>");
             	String eleccion = entrada.nextLine();
             	if (eleccion.equals("1")) {
-            		out.writeUTF("PostNote");
+            		out.writeObject("PostNote");
             		System.out.println(in.readUTF());
             		System.out.println(in.readUTF());
             		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
-            		outObject.writeObject(tupla);
+            		out.writeObject(tupla);
             		System.out.println(in.readUTF());
             		
             		
             	}else if(eleccion.equals("2")){
-            		out.writeUTF("RemoveNote");
+            		out.writeObject("RemoveNote");
             		System.out.println(in.readUTF());
             		System.out.println(in.readUTF());
             		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
-            		outObject.writeObject(tupla);
+            		out.writeObject(tupla);
             		System.out.println(in.readUTF());
             		
             	}else if(eleccion.equals("3")) {
-            		out.writeUTF("ReadNote");
+            		out.writeObject("ReadNote");
             		System.out.println(in.readUTF());
             		System.out.println(in.readUTF());
             		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
-            		outObject.writeObject(tupla);
+            		out.writeObject(tupla);
             		System.out.println(in.readUTF());
 
             	}else if(eleccion.equals("4")) {
-            		out.writeUTF("terminar");
+            		out.writeObject("terminar");
             		System.out.println(in.readUTF());
-            		System.out.println("Saliendo del Sistema... Hasta Pronto!");
+            		System.out.println("\nSaliendo del Sistema... Hasta Pronto!");
             		break;
             	}
-            	else System.out.println("Error elija una opcion correcta...");
+            	else System.out.println("\nError elija una opcion correcta...");
             }
             cs.close();
 		}catch(Exception e) {

@@ -10,6 +10,9 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * esta clase hace...
+ */
 public class ThreadLinda extends Thread{
 	private Socket cs;
 	private final int PUERTO1 = 4321;
@@ -23,7 +26,10 @@ public class ThreadLinda extends Thread{
 	public ThreadLinda(Socket cs) {
 		this.cs = cs;
 	}
-	
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	private String clienteRun(Socket cs, String tipo, ArrayList<String> tupla) {
 		String devolucion = "";
 		try {
@@ -39,18 +45,23 @@ public class ThreadLinda extends Thread{
 		}
 		return devolucion;
 	}
-	
-	private void gestionConexion(String accion, DataInputStream in, DataOutputStream out, ObjectInputStream inObject) {
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 * @throws ClassNotFoundException 
+	 */
+	private void gestionConexion(String accion, DataOutputStream out, 
+			ObjectInputStream inObject) throws ClassNotFoundException {
 		try {
 			if(accion.equals("PostNote")) {
-				out.writeUTF("Accion recibida, has elegido PostNote.");
-				out.writeUTF("Devuelve que tupla deseas añadir.");
+				out.writeUTF("\nAccion recibida, has elegido PostNote.");
+				out.writeUTF("Devuelve que tupla deseas añadir.\n");
 			}else if(accion.equals("ReadNote")) {
-				out.writeUTF("Accion recibida, has elegido ReadNote.");
-				out.writeUTF("Devuelve que tupla deseas buscar.");
+				out.writeUTF("\nAccion recibida, has elegido ReadNote.");
+				out.writeUTF("Devuelve que tupla deseas buscar.\n");
 			}else {
-				out.writeUTF("Accion recibida, has elegido RemoveNote.");
-				out.writeUTF("Devuelve que tupla deseas borrar.");
+				out.writeUTF("\nAccion recibida, has elegido RemoveNote.");
+				out.writeUTF("Devuelve que tupla deseas borrar.\n");
 			}
 			ArrayList<String> tupla = (ArrayList<String>) inObject.readObject();
 			System.out.println(tupla);
@@ -64,7 +75,7 @@ public class ThreadLinda extends Thread{
 					cs.close();
 				}catch(IOException e) {
 					activo = false;
-					System.out.println("\nError el servidor 1 esta caido\n");
+					System.out.println("\nError el servidor 1 esta caido");
 				}try {
 					csReplica = new Socket(HOSTReplica,PUERTOReplica);
 					if(activo == false) {
@@ -75,7 +86,7 @@ public class ThreadLinda extends Thread{
 						csReplica.close();
 					}
 				}catch(IOException e) {
-					System.out.println("\nError el servidor replica esta caido\n");
+					System.out.println("\nError el servidor replica esta caido");
 				}
 			}else if(tupla.size() > 3 && tupla.size() <= 5) {
 				Socket cs = new Socket(HOST2,PUERTO2);
@@ -86,24 +97,25 @@ public class ThreadLinda extends Thread{
 				out.writeUTF(clienteRun(cs,accion,tupla));
 				cs.close();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("\nError el servidor 2 o 3 esta caido");
 		}
 	}
-	
-
+	/**
+	 * Pre: --- 
+	 * Post: Este metodo creara y iniciara el servidor.
+	 */
 	public void run() {
 		try {
 			System.out.println("Cliente en línea");
-	        DataInputStream in = new DataInputStream(cs.getInputStream());
 	        DataOutputStream out = new DataOutputStream(cs.getOutputStream());
-	        ObjectInputStream inObject = new ObjectInputStream(cs.getInputStream());
+	        ObjectInputStream in = new ObjectInputStream(cs.getInputStream());
 	        out.writeUTF("BIENVENIDO AL SISTEMA LINDA");
 	        while(true) {
-				String accion = in.readUTF();
+				String accion = (String) in.readObject();
 	            System.out.println(accion);
 	            if(accion.equals("terminar")) break;
-	            else gestionConexion(accion,in,out,inObject);
+	            else gestionConexion(accion,out,in);
 			}
 	        cs.close();
 		} catch (Exception e) {
