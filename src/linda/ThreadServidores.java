@@ -6,7 +6,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * esta clase hace...
+ * esta Es el thread de los servidores y se encargara de conversar
+ * con el cliente Linda cuando se le llame.
  */
 public class ThreadServidores extends Thread {
 	Socket cs;
@@ -17,21 +18,22 @@ public class ThreadServidores extends Thread {
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo devolvera el arrayList de la base de datos.
 	 */
 	public ArrayList<ArrayList<String>> getTuplas() {
 		return tuplas.content;
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo igualara el arrayList de la base de datos
+	 * al que se le pase como parametro.
 	 */
 	public void setTuplas(ArrayList<ArrayList<String>> tuplas) {
 		this.tuplas.content = tuplas;
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo realizara un añadido en el servidor.
 	 */
 	public void postNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
@@ -45,7 +47,7 @@ public class ThreadServidores extends Thread {
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo borrara una tupla en el servidor.
 	 */
 	public void removeNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
@@ -63,7 +65,7 @@ public class ThreadServidores extends Thread {
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo leera una tupla en el servidor.
 	 */
 	public void readNote(ObjectOutputStream out, ObjectInputStream inObj) {
 		try {
@@ -77,7 +79,8 @@ public class ThreadServidores extends Thread {
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este llevara la conversacion y en funcion de la accion recivida
+	 * derivara para un lugar u otro.
 	 */
 	public void run() {
 		try {
@@ -91,10 +94,13 @@ public class ThreadServidores extends Thread {
 	        	ArrayList<ArrayList<String>> descarga = getTuplas();
 	        	outObj.writeObject(descarga);
 	        }
-	        else if(mensaje.equals("subir")) setTuplas((ArrayList<ArrayList<String>>)inObj.readObject());
-	        else if(mensaje.equals("vida")) outObj.writeObject("Esto es una linea de vida");
+	        else if(mensaje.equals("subir")) setTuplas((ArrayList<ArrayList<String>>)
+	        		inObj.readObject());
+	        else if(mensaje.equals("vida")) outObj.writeObject("Esto es "
+	        		+ "una linea de vida");
 	        else readNote(outObj,inObj);
-	        System.out.println(tuplas.content);
+	        System.out.println("\nEl contenido Actual de la base de "
+	        		+ "datos es: " + tuplas.content + "\n");
 	        cs.close();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

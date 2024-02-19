@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class MainServidor {
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo elegiras que servidor deseas levantar y lo iniciara.
 	 */
   public static void main(String[] args) throws IOException {
 	  Scanner input = new Scanner(System.in);

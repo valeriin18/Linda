@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class MainCliente {
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara el cliente y lo iniciara.
+	 * Post: Este metodo creara el cliente y  lo iniciara.
 	 */
   public static void main(String[] args) throws IOException {
       Cliente cli = new Cliente(); 

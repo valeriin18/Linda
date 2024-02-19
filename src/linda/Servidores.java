@@ -3,7 +3,7 @@ package linda;
 import java.io.IOException;
 
 /**
- * esta clase hace...
+ * esta clase es la que gestiona los servidores
  */
 public class Servidores extends Conexion{
 	int numero;

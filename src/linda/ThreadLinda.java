@@ -11,7 +11,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * esta clase hace...
+ * Esta clase es el hilo de linda y se encarga de llevar la conversacion
+ * con el cliente.
  */
 public class ThreadLinda extends Thread{
 	private Socket cs;
@@ -28,7 +29,8 @@ public class ThreadLinda extends Thread{
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo creara y iniciara un cliente Linda conectado al servidor que 
+	 * sea necesario para obtener sus datos y mas tarde devolverselos al cliente.
 	 */
 	private String clienteRun(Socket cs, String tipo, ArrayList<String> tupla) {
 		String devolucion = "";
@@ -47,7 +49,9 @@ public class ThreadLinda extends Thread{
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo comprobara la tupla recivida y la accion a realizar para
+	 * mandar que el cliente linda se conecte al servidor que sea necesario en funcion
+	 * de su longitud.
 	 * @throws ClassNotFoundException 
 	 */
 	private void gestionConexion(String accion, DataOutputStream out, 
@@ -103,7 +107,8 @@ public class ThreadLinda extends Thread{
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo sera el inicio de la conversacion y desde aqui se lanzara
+	 * todo.
 	 */
 	public void run() {
 		try {

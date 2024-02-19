@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * esta clase hace...
+ * esta realiza las conexiones pertinentes en funcion de lo que se requiere.
  */
 public class Conexion {
     private final int PUERTO = 1234; 

@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * esta clase hace...
+ * esta clase comprueba el estado de los servidores y copia los datos si es necesario.
  */
 public class ThreadCopiaServidores extends Thread{
 	private final int PUERTO1 = 4321;
@@ -22,17 +22,20 @@ public class ThreadCopiaServidores extends Thread{
 	
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo comprobara el servidor 1 y si se cae al levantarse de nuevo
+	 * copiara los datos de replica a este..
 	 */
 	public void vidaCopiaServidor1() throws ClassNotFoundException {
 		try {
 			Socket cs = new Socket(HOST1,PUERTO1);
 			if(serv1Activo == false) {
 				Socket csReplica= new Socket(HOSTReplica,PUERTOReplica);
-				ObjectOutputStream outObj = new ObjectOutputStream(csReplica.getOutputStream());
+				ObjectOutputStream outObj = new ObjectOutputStream
+						(csReplica.getOutputStream());
 				outObj.writeObject("bajar");
 				ObjectInputStream inObj = new ObjectInputStream(csReplica.getInputStream());
-				ArrayList<ArrayList<String>> descarga = (ArrayList<ArrayList<String>>) inObj.readObject();
+				ArrayList<ArrayList<String>> descarga = (ArrayList<ArrayList<String>>) 
+						inObj.readObject();
 				csReplica.close();
 				ObjectOutputStream outObj1 = new ObjectOutputStream(cs.getOutputStream());
 				outObj1.writeObject("subir");
@@ -52,7 +55,8 @@ public class ThreadCopiaServidores extends Thread{
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: Este metodo comprobara el servidor replica y si se cae al levantarse de nuevo
+	 * copiara los datos de servidor 1 a este..
 	 */
 	public void vidaCopiaServidorReplica() throws ClassNotFoundException {
 		try {
@@ -62,7 +66,8 @@ public class ThreadCopiaServidores extends Thread{
 				ObjectOutputStream outObj = new ObjectOutputStream(cs.getOutputStream());
 				outObj.writeObject("bajar");
 				ObjectInputStream inObj = new ObjectInputStream(cs.getInputStream());
-				ArrayList<ArrayList<String>> descarga = (ArrayList<ArrayList<String>>) inObj.readObject();
+				ArrayList<ArrayList<String>> descarga = (ArrayList<ArrayList<String>>) 
+						inObj.readObject();
 				cs.close();
 				ObjectOutputStream outObj1 = new ObjectOutputStream(csReplica.getOutputStream());
 				outObj1.writeObject("subir");
@@ -82,7 +87,8 @@ public class ThreadCopiaServidores extends Thread{
 	}
 	/**
 	 * Pre: --- 
-	 * Post: Este metodo creara y iniciara el servidor.
+	 * Post: ESte metodo creara un bucle infinito que cada 30 segundos 
+	 * comprobara la vida de los servidores y copiara si es necesario.
 	 */
 	public void run() {
 		while(true) {

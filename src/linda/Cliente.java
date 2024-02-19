@@ -7,32 +7,37 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
- * Esta clase contendra el codigo de uso de los clientes.
+ * Esta clase contiene el codigo de uso de los clientes.
  */
 public class Cliente extends Conexion {
     public Cliente() throws IOException {
     	super("cliente",0);
     } 
-    
+    /**
+	 * Pre: --- 
+	 * Post: Este metodo permite el crear una tupla ya sea para añadir, eliminar
+	 * o leer.
+	 */
     public ArrayList<String> creacionTupla(Scanner entrada, String eleccionP){
     	ArrayList<String> tupla = new ArrayList<>();
     	while(true) {
-    		System.out.println("\nIntroduce los strings que constituyen la tupla, \n"
-    						 + "si se introduce \"EXIT\" se terminara la introduccion.");
+    		System.out.println("\nIntroduce los strings que constituyen la "
+    			+ "tupla, \nsi se introduce \"EXIT\" se terminara la introduccion.");
     		String eleccion = entrada.nextLine();
-    		if(eleccion.contains("?") && eleccionP.equals("1"))System.out.println("Error al añadir no puedes ingresar ?");
+    		if(eleccion.contains("?") && eleccionP.equals("1"))System.out.println("Error "
+    				+ "al añadir no puedes ingresar ?");
     		else if(eleccion.equals("EXIT")) break;
-    		else if(eleccion.equals("")) System.out.println("\nError debe introducir algun caracter.");
+    		else if(eleccion.equals("")) System.out.println("\nError debe introducir "
+    				+ "algun caracter.");
     		else tupla.add(eleccion);
     	}
     	return tupla;
     }
-    
 	/**
 	 * Pre: --- 
-	 * Post: En este metodo se solicitara al cliente su nombre de usuario 
-	 * y luego entrara en bucle de compra de billetes hasta que el avion 
-	 * este vacio.
+	 * Post: En este metodo se solicitara al cliente que diga que accion desea
+	 * realizar para luego en funcion de la comunicacion tener una conversacion 
+	 * u otra.
 	 */
     public void startClient() {
     	try {
@@ -46,31 +51,15 @@ public class Cliente extends Conexion {
             			+ " 1.PostNote. \n 2.RemoveNote. \n 3.ReadNote. \n"
             			+ " 4.Salir. \n==>>");
             	String eleccion = entrada.nextLine();
-            	if (eleccion.equals("1")) {
-            		out.writeObject("PostNote");
-            		System.out.println(in.readUTF());
-            		System.out.println(in.readUTF());
-            		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
-            		out.writeObject(tupla);
-            		System.out.println(in.readUTF());
-            		
-            		
-            	}else if(eleccion.equals("2")){
-            		out.writeObject("RemoveNote");
-            		System.out.println(in.readUTF());
-            		System.out.println(in.readUTF());
-            		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
-            		out.writeObject(tupla);
-            		System.out.println(in.readUTF());
-            		
-            	}else if(eleccion.equals("3")) {
-            		out.writeObject("ReadNote");
-            		System.out.println(in.readUTF());
-            		System.out.println(in.readUTF());
-            		ArrayList<String> tupla = creacionTupla(entrada,eleccion);
-            		out.writeObject(tupla);
-            		System.out.println(in.readUTF());
-
+            	if (!(eleccion.equals("4"))) {
+            		if (eleccion.equals("1")) out.writeObject("PostNote");
+                	if (eleccion.equals("2")) out.writeObject("RemoveNote");
+                	if (eleccion.equals("3")) out.writeObject("ReadNote");
+                	System.out.println(in.readUTF());
+                	System.out.println(in.readUTF());
+                	ArrayList<String> tupla = creacionTupla(entrada,eleccion);
+                	out.writeObject(tupla);
+                	System.out.println(in.readUTF());
             	}else if(eleccion.equals("4")) {
             		out.writeObject("terminar");
             		System.out.println(in.readUTF());
