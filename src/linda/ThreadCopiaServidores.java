@@ -77,7 +77,7 @@ public class ThreadCopiaServidores extends Thread{
 				ObjectOutputStream outObj1 = new ObjectOutputStream(csReplica.getOutputStream());
 				ObjectInputStream inObj = new ObjectInputStream(csReplica.getInputStream());
 				outObj1.writeObject("vida");
-				System.out.println(inObj.readObject() + "\n");
+				String almacen = (String)inObj.readObject();
 			}
 			csReplica.close();
 		}catch(IOException e) {
@@ -93,7 +93,7 @@ public class ThreadCopiaServidores extends Thread{
 	public void run() {
 		while(true) {
 			try {
-				Thread.sleep(30000);
+				Thread.sleep(5000);
 				vidaCopiaServidor1();
 				vidaCopiaServidorReplica();
 			} catch (InterruptedException | ClassNotFoundException e) {
