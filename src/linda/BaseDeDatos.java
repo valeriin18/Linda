@@ -17,6 +17,21 @@ public class BaseDeDatos {
 	}
 	/**
 	 * Pre: --- 
+	 * Post: Este metodo permite el controlar con semaforos la copia
+	 * del servidor.
+	 */
+	public void copiaDatos(ArrayList<ArrayList<String>> tupla) {
+		try {
+			s1.acquire(2);
+			this.content = tupla;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}finally {
+			s1.release(2);
+		}
+	}
+	/**
+	 * Pre: --- 
 	 * Post: Este metodo permite el leer la base de datos y comprobar
 	 * si la tupla a buscar se encuentra en ella. hay otro metodo parecido
 	 * pero este se a creado para poder gestionar con semaforos ya que el otro

@@ -26,10 +26,10 @@ public class ThreadServidores extends Thread {
 	/**
 	 * Pre: --- 
 	 * Post: Este metodo igualara el arrayList de la base de datos
-	 * al que se le pase como parametro.
+	 * al que se le pase como parametro para poder realizar la copia.
 	 */
 	public void setTuplas(ArrayList<ArrayList<String>> tuplas) {
-		this.tuplas.content = tuplas;
+		this.tuplas.copiaDatos(tuplas);
 	}
 	/**
 	 * Pre: --- 

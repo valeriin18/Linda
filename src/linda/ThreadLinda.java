@@ -20,10 +20,10 @@ public class ThreadLinda extends Thread{
 	private final int PUERTO2 = 5678;
 	private final int PUERTO3 = 9101;
 	private final int PUERTOReplica = 6587;
-	private final String HOST1 = "localhost";
-	private final String HOST2 = "localhost";
-	private final String HOST3 = "localhost";
-	private final String HOSTReplica = "localhost";
+	private final String HOST1 = "172.30.100.145";
+	private final String HOST2 = "172.30.100.145";
+	private final String HOST3 = "172.30.100.145";
+	private final String HOSTReplica = "172.30.100.145";
 	public ThreadLinda(Socket cs) {
 		this.cs = cs;
 	}
